@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>进度条</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12"></script>
+    <script src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
+    <style>
+        body{
+            margin: 0;
+            padding: 0;
+            background-image: linear-gradient(120deg, #e0c3fc 0%, #8ec5fc 100%);
+        }
+        #app {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            width: 100%;
+            height: 100vh;
+        }
+        .progress{
+            width: 50%;
+        }
+        .notify{
+            position: absolute;
+            right: 10px;
+            display: block;
+            height: 50px;
+            top: 10px;
+            /* width: 191px; */
+            text-align: center;
+            line-height: 50px;
+            padding: 5px 20px;
+            border-radius: 10px;
+            background: #ffffff;
+            box-shadow: 0 10px 10px #eaeaea;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="app">
+        <!-- <div class="bar_box">
+            <div class="bar_progress" :style="{width: barWidth + 'px'}"></div>
+            <div class="bar_bg"></div>
+        </div> -->
+        <div class="notify">KeyCode: <span style="color: green; font-weight: bolder;">{{keyCode}}</span>  Key: <span style="color: red; font-weight: bolder;">{{key}}</span></div>
+        <div class="progress">
+            <wb-progress :percentage="progressNum" :color="'#409eff'"></wb-progress>
+            <wb-progress :percentage="progressNum" :color="'#67c23a'"></wb-progress>
+            <wb-progress :percentage="progressNum" :color="'#e6a23c'"></wb-progress>
+            <wb-progress :percentage="progressNum" :color="'#f56c6c'"></wb-progress>
+        </div>
+        <button @click="clickHandle">sdfsdf</button>
+    </div>
+    <script>
+        
+
+        Vue.component('wb-progress', {
+            props: ['percentage', 'width', 'color'],
+            data() {
+                return {
+                    mode: 'pause', // play mode:  pause start
+                    duration: '3:53', // 音乐时间长度
+                    durationToSeconds: 0, // 音乐时间长度转化为秒
+                    barGrowth: 0, // 进度条每秒步进的长度
+                    growthTimer: null, // 步进的轮训
+                    dropTimer: null // 步减的轮训
+                }
+            },
+            created() {
+                let self = this;
+            },
+            computed: {
+                bgStyle(){
+                    const style = {}
+                    style.position = 'relative';
+                    style.top = '-6px';
+                    style.zIndex = '99';
+                    style.width = '100%';
+                    style.height = '6px';
+                    style.background = '#eaeaea';
+                    return style
+                },
+                barPgStyle() {
+                    const self = this;
+                    const style = {};
+                    style.width = '100%';
+                    style.height = '6px';
+                    style.boxSizing = 'border-box';
+                    style.display = 'inline-block';
+                    style.verticalAlign = 'middle';
+                    style.borderRadius = '5px';
+                    style.overflow = 'hidden';
+                    return style;
+                },
+                barStyle() {
+                    const self = this;
+                    const style = {};
+                    style.width = self.percentage + '%';
+                    style.background = self.color;
+                    style.height = '100%';
+                    style.position = 'relative';
+                    style.zIndex = '100';
+                    style.transition = 'all ease .3s';
+                    return style;
+                }
+            },
+            mounted() {
+                var self = this;
+                self.$on('change', val => {
+                    console.log('v-on : ', val)
+                })
+            },
+            methods: {
+                handleProgress(type){
+                    console.log('type')
+                    var self = this;
+                    switch(type){
+                        case 'add':
+                            if(self.percentage + 1 > 100){
+                                break;
+                            } 
+                            self.percentage += 1;
+                            break;
+                        case 'reduce':
+                            if(self.percentage - 1 < 0){
+                                break;
+                            } 
+                            self.percentage -= 1;
+                            break;
+                        default: 
+                            break;
+                    }
+                }
+            },
+            template: `
+                <div class="wb-progress-bar" :style="barPgStyle">
+                    <div class="wb-bar-progress" :style="barStyle"></div>
+                    <div class="wb-bar-bg" :style="bgStyle"></div>
+                </div>
+            `
+        })
+
+        /**
+         * 步进值始终为1
+         * 考虑根据总时长和进度条长度之间的关系来算出步进的频率
+         **/
+        var vm = new Vue({
+            el:'#app',
+            data:{
+                progressNum: 10,
+                notifyEl: $('.notify')[0],
+                barWidth: 0, // 进度条长度
+                // barBgWidth: $('.bar_bg')[0].offsetWidth, // 进度条背景总长度，用于计算步进值
+                key: "",
+                keyCode: "", 
+                mode: 'pause', // play mode:  pause start
+                duration: '3:53', // 音乐时间长度
+                durationToSeconds: 0, // 音乐时间长度转化为秒
+                barGrowth: 0, // 进度条每秒步进的长度
+                growthTimer: null, // 步进的轮训
+                dropTimer: null // 步减的轮训
+            },
+            created() {
+                var self = this;
+                self.durationToSeconds = self.getSecondsFromDuration(self.duration);
+                self.barGrowth = self.getMoval(self.durationToSeconds, self.barBgWidth)
+                window.onkeypress = self.onKeyPressHandle;
+            },
+            mounted() {
+                var self = this;
+
+            },
+            methods:{
+                clickHandle() {
+                    var self = this;
+                    self.progressNum += 1;
+                },
+                progressStart(type) {
+                    var self = this;
+                    var i = 0;
+                    if(type !== 'add' || type !== 'reduce'){
+                        return;
+                    }
+                    if(self.dropTimer){
+                        clearTimeout(self.dropTimer);
+                        self.dropTimer = null;
+                    }
+                    if(self.growthTimer){
+                        clearTimeout(self.growthTimer);
+                        self.growthTimer = null;
+                    }
+                    self.growthTimer = setInterval(() => {
+                       self.handleProgress(type) 
+                       console.log('seconds: ', ++i)
+                    }, 1000);
+                }, 
+                getMoval(seconds, totalLength){
+                    var self = this;
+                    return parseFloat(self.barBgWidth / seconds)
+                },
+                getSecondsFromDuration(duration){
+                    let durationArr = duration.split(':'),
+                        totalSeconds = 0,
+                        minites = 0,
+                        seconds = 0;
+                    if(durationArr.length === 2){
+                        minites = durationArr[0];
+                        seconds = durationArr[1];
+                    }
+                    totalSeconds = parseInt(minites * 60) + parseInt(seconds);
+                    return totalSeconds;
+                },
+                onKeyPressHandle(e){
+                    var self = this;
+                    if(e.keyCode === 32){
+                        if(self.mode === 'pause'){
+                            self.mode = 'start'
+                        }else{
+                            self.mode = 'pause'
+                        }
+                    }
+
+                    self.notify({
+                        key: e.key,
+                        keyCode: e.keyCode
+                    })
+                    
+                    switch(e.keyCode){
+                        case 46:
+                            self.progressStart('add')
+                            break;
+                        case 44:
+                            self.progressStart('reduce')
+                            break;
+                        default:
+                            break;
+                    }
+                },
+                notify(content){
+                    let self = this;
+                    let {key, keyCode} = content;
+                    self.key = key;
+                    self.keyCode = keyCode;
+                },
+                initProgressBar() {
+                    
+                },
+                handleProgress(type){
+                    var self = this;
+                    switch(type){
+                        case 'add': 
+                            if(self.barWidth < self.barBgWidth && (self.barWidth + self.barGrowth) <= self.barBgWidth){
+                                console.log('===add self.barWidth: ', self.barWidth, ', self.barGrowth: ', self.barGrowth)
+                                self.barWidth = (self.barWidth + self.barGrowth);
+                                console.log('===add self.barWidth', self.barWidth)
+                            }
+                            break;
+                        case 'reduce':
+                            if((self.barWidth - self.barGrowth) >= 0){
+                                console.log('===reduce self.barWidth: ', self.barWidth, ', self.barGrowth: ', self.barGrowth)
+                                self.barWidth = (self.barWidth - self.barGrowth);
+                                console.log('===reduce self.barWidth', self.barWidth)
+                            }
+                            break;
+                        default: 
+                            break;
+                    }
+                    switch(type){
+                        case 'add':
+                            if(self.progressNum + 1 > 100){
+                                break;
+                            } 
+                            self.progressNum += 1;
+                            break;
+                        case 'reduce':
+                            if(self.progressNum - 1 < 0){
+                                break;
+                            } 
+                            self.progressNum -= 1;
+                            break;
+                        default: 
+                            break;
+                    }
+                    
+                    if(self.progressNum === 0 || self.progressNum === 100){
+                        clearInterval(self.dropTimer);
+                        clearInterval(self.growthTimer);
+
+                        self.dropTimer = null;
+                        self.growthTimer = null;
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>
