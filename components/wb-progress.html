@@ -12,7 +12,7 @@
         body{
             margin: 0;
             padding: 0;
-            background-image: linear-gradient(120deg, #e0c3fc 0%, #8ec5fc 100%);
+            background-image: linear-gradient(60deg, #29323c 0%, #485563 100%);
         }
         #app {
             display: flex;
@@ -50,15 +50,15 @@
         </div> -->
         <div class="notify">KeyCode: <span style="color: green; font-weight: bolder;">{{keyCode}}</span>  Key: <span style="color: red; font-weight: bolder;">{{key}}</span></div>
         <div class="progress">
-            <wb-progress :percentage="progressNum" :color="'#409eff'"></wb-progress>
-            <wb-progress :percentage="progressNum" :color="'#67c23a'"></wb-progress>
+            <wb-progress :percentage="progressNum" :color="'linear-gradient(135deg, #667eea 0%, #764ba2 100%)'" v-on:progress-change="onProgressChange"></wb-progress>
+            <!-- <wb-progress :percentage="progressNum" :color="'#67c23a'"></wb-progress>
             <wb-progress :percentage="progressNum" :color="'#e6a23c'"></wb-progress>
-            <wb-progress :percentage="progressNum" :color="'#f56c6c'"></wb-progress>
+            <wb-progress :percentage="progressNum" :color="'#f56c6c'"></wb-progress> -->
         </div>
         <button @click="clickHandle">sdfsdf</button>
     </div>
     <script>
-        
+        Vue.config.devtools = true;
 
         Vue.component('wb-progress', {
             props: ['percentage', 'width', 'color'],
@@ -75,6 +75,12 @@
             created() {
                 let self = this;
             },
+            watch: {
+                percentage(val, oldval){
+                    console.log('val: ', val)
+                    console.log('oldval: ', oldval)
+                }
+            },
             computed: {
                 bgStyle(){
                     const style = {}
@@ -83,7 +89,8 @@
                     style.zIndex = '99';
                     style.width = '100%';
                     style.height = '6px';
-                    style.background = '#eaeaea';
+                    style.background = '#e3e5e6';
+                    style.borderRadius = '5px';
                     return style
                 },
                 barPgStyle() {
@@ -95,7 +102,6 @@
                     style.display = 'inline-block';
                     style.verticalAlign = 'middle';
                     style.borderRadius = '5px';
-                    style.overflow = 'hidden';
                     return style;
                 },
                 barStyle() {
@@ -107,14 +113,26 @@
                     style.position = 'relative';
                     style.zIndex = '100';
                     style.transition = 'all ease .3s';
+                    style.borderRadius = '5px';
+                    return style;
+                },
+                barSpotStyle() {
+                    const self = this;
+                    const style = {};
+                    style.display = 'block';
+                    style.width = '15px';
+                    style.height = '15px';
+                    style.borderRadius = '50%';
+                    style.background = self.color;
+                    style.position = 'absolute';
+                    style.top = '-5px';
+                    style.right = '-10px';
+                    style.cursor = 'pointer';
                     return style;
                 }
             },
             mounted() {
                 var self = this;
-                self.$on('change', val => {
-                    console.log('v-on : ', val)
-                })
             },
             methods: {
                 handleProgress(type){
@@ -140,7 +158,9 @@
             },
             template: `
                 <div class="wb-progress-bar" :style="barPgStyle">
-                    <div class="wb-bar-progress" :style="barStyle"></div>
+                    <div class="wb-bar-progress" :style="barStyle">
+                        <span class="wb-bar-progress-spot" :style="barSpotStyle" @click="$emit('progress-change', 3)"></span>
+                    </div>
                     <div class="wb-bar-bg" :style="bgStyle"></div>
                 </div>
             `
@@ -177,6 +197,10 @@
 
             },
             methods:{
+                onProgressChange(val) {
+                    var self = this;
+                    self.progressNum + val > 100 ? "" : self.progressNum += val;
+                },
                 clickHandle() {
                     var self = this;
                     self.progressNum += 1;
@@ -195,6 +219,7 @@
                         clearTimeout(self.growthTimer);
                         self.growthTimer = null;
                     }
+                    
                     self.growthTimer = setInterval(() => {
                        self.handleProgress(type) 
                        console.log('seconds: ', ++i)
