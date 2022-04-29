@@ -1,0 +1,75 @@
+.wb-button{
+    outline: none;
+    display: inline-block;
+    border-radius: 4px;
+    padding: 8px 20px;
+    font-size: 15px;
+    cursor: pointer;
+    background: #ffffff;
+    color: #000000;
+    border: none;
+    box-sizing: border-box;
+    margin: 0 5px;
+}
+
+.wb-button:active{
+    box-shadow: 0 0 10px rgba(0,0,0,.1);
+}
+
+.wb-button-main{
+    color: #ffffff;
+    background: #378df9;
+}
+.wb-button-main:active{
+    color: #ffffff;
+    background: #1d74d1;
+}
+
+.wb-button-success{
+    color: #ffffff;
+    background: #27cb37 ;
+}
+.wb-button-success:active{
+    color: #ffffff;
+    background: #5daf34;
+}
+
+.wb-button-warning{
+    color: #ffffff;
+    background: #eea70f;
+}
+.wb-button-warning:active{
+    color: #ffffff;
+    background: #e6a23c;
+}
+
+.wb-button-danger{
+    color: #ffffff;
+    background: #d22222;
+}
+.wb-button-danger:active{
+    color: #ffffff;
+    background: #b32a2a;
+}
+
+.wb-button-default{
+    border: 1px solid #eaeaea;
+}
+.wb-button-default:active{
+    border: 1px solid #017aeb;
+    background: #ecf5ff;
+}
+
+.is-round{
+    border-radius: 30px;
+}
+
+.is-circle{
+    width: 50px;
+    height: 50px;
+    padding: 12px;
+    text-align: center;
+    white-space: nowrap;
+    line-height: 1;
+    border-radius: 50%;
+}
