@@ -1,10 +1,12 @@
 {
-  "name": "vue-component",
-  "version": "1.0.0",
+  "name": "wb-ui",
+  "version": "0.0.1",
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "webpack-dev-server --config webpack.config.dev.js",
+    "build": "webpack --mode=production --config webpack.config.js"
   },
   "repository": {
     "type": "git",
@@ -18,9 +20,18 @@
   },
   "homepage": "https://github.com/uncledwyane/vue-component#readme",
   "devDependencies": {
-    "element-ui": "^2.15.8"
+    "babel-loader": "^8.2.5",
+    "element-ui": "^2.15.8",
+    "html-webpack-plugin": "^5.5.0",
+    "webpack": "^5.72.0",
+    "webpack-cli": "^4.9.2",
+    "webpack-dev-server": "^4.9.0"
   },
   "dependencies": {
-    "smooth-scrollbar": "^8.7.4"
+    "lodash": "^4.17.21",
+    "smooth-scrollbar": "^8.7.4",
+    "vue": "^2.3.2",
+    "vue-loader": "^17.0.0",
+    "vue-template-compiler": "^2.6.14"
   }
 }
