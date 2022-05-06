@@ -18,38 +18,38 @@
 
 .wb-button-main{
     color: #ffffff;
-    background: #378df9;
+    background: #1989fa;
 }
 .wb-button-main:active{
     color: #ffffff;
-    background: #1d74d1;
+    background: #8cc4fc;
 }
 
 .wb-button-success{
     color: #ffffff;
-    background: #27cb37 ;
+    background: #5cb87a ;
 }
 .wb-button-success:active{
     color: #ffffff;
-    background: #5daf34;
+    background: #addbbc;
 }
 
 .wb-button-warning{
     color: #ffffff;
-    background: #eea70f;
+    background: #e6a23c;
 }
 .wb-button-warning:active{
     color: #ffffff;
-    background: #e6a23c;
+    background: #f2d09d;
 }
 
 .wb-button-danger{
     color: #ffffff;
-    background: #d22222;
+    background: #f56c6c;
 }
 .wb-button-danger:active{
     color: #ffffff;
-    background: #b32a2a;
+    background: #fab5b5;
 }
 
 .wb-button-default{
@@ -65,8 +65,8 @@
 }
 
 .is-circle{
-    width: 50px;
-    height: 50px;
+    width: 40px;
+    height: 40px;
     padding: 12px;
     text-align: center;
     white-space: nowrap;

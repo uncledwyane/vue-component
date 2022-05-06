@@ -18,9 +18,11 @@
         <wb-button type="warning">Waring</wb-button>
         <wb-button type="danger" round>Error</wb-button>
         <wb-button>Default</wb-button>
-        <wb-button type="danger" circle>ssss</wb-button>
+        <wb-button type="danger" circle>+</wb-button>
     </div>
     <script>
+        Vue.config.devtools = true;
+        
         Vue.component('wb-button', {
             props: {
                 type: {
@@ -32,8 +34,6 @@
             },
             created() {
                 const self = this
-                console.log('+++self.type: ', self.type)
-                // console.log('slot: ', self.$slots)
             },
             data() {
                 return {
@@ -52,7 +52,6 @@
             `
         })
 
-        // :class="[type ? 'wb-button-' + type : 'wb-button-default', round ? 'is-round' : '']
         var vm = new Vue({
            el:'#app',
            data:{},

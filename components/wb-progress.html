@@ -6,39 +6,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>进度条</title>
+    <link rel="stylesheet" href="../styles/wb-progress.css">
+    <link rel="stylesheet" href="../styles/wb-button.css">
     <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12"></script>
     <script src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
     <style>
-        body{
-            margin: 0;
-            padding: 0;
-            background: #ffffff;
-        }
-        #app {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-direction: column;
-            width: 100%;
-            height: 100vh;
-        }
-        .progress{
-            width: 50%;
-        }
-        .notify{
-            position: absolute;
-            right: 10px;
-            display: block;
-            height: 50px;
-            top: 10px;
-            /* width: 191px; */
-            text-align: center;
-            line-height: 50px;
-            padding: 5px 20px;
-            border-radius: 10px;
-            background: #ffffff;
-            box-shadow: 0 10px 10px #eaeaea;
-        }
     </style>
 </head>
 
@@ -50,12 +22,15 @@
         </div> -->
         <div class="notify">KeyCode: <span style="color: green; font-weight: bolder;">{{keyCode}}</span>  Key: <span style="color: red; font-weight: bolder;">{{key}}</span></div>
         <div class="progress">
-            <wb-progress :percentage="progressNum" :color="'linear-gradient(135deg, #667eea 0%, #764ba2 100%)'" @handle-move="onHandleMove" @handle-click="console.log('spot click, curr progressNum: ' + progressNum)"></wb-progress>
+            <wb-progress :percentage="progressNum" :color="'linear-gradient(135deg, #667eea 0%, #764ba2 100%)'"></wb-progress>
             <!-- <wb-progress :percentage="progressNum" :color="'#67c23a'"></wb-progress>
             <wb-progress :percentage="progressNum" :color="'#e6a23c'"></wb-progress>
             <wb-progress :percentage="progressNum" :color="'#f56c6c'"></wb-progress> -->
         </div>
-        <button @click="clickHandle">sdfsdf</button>
+        <div class="option">
+            <wb-button @click="progressStart('reduce')" type="main">Decrease</wb-button>
+            <wb-button @click="progressStart('add')" type="danger">Increase</wb-button>
+        </div>
     </div>
     <script>
         Vue.config.devtools = true;
@@ -80,50 +55,17 @@
                 }
             },
             computed: {
-                bgStyle(){
-                    const style = {}
-                    style.position = 'relative';
-                    style.width = '100%';
-                    style.height = '6px';
-                    style.background = '#e3e5e6';
-                    style.borderRadius = '5px';
-                    return style
-                },
-                barPgStyle() {
-                    const self = this;
-                    const style = {};
-                    style.width = '100%';
-                    style.height = '6px';
-                    style.boxSizing = 'border-box';
-                    style.display = 'inline-block';
-                    style.verticalAlign = 'middle';
-                    style.borderRadius = '5px';
-                    return style;
-                },
                 barStyle() {
                     const self = this;
                     const style = {};
                     style.width = self.percentage + '%';
                     style.background = self.color;
-                    style.height = '100%';
-                    style.position = 'relative';
-                    style.zIndex = '100';
-                    style.transition = 'all ease .3s';
-                    style.borderRadius = '5px';
                     return style;
                 },
                 barSpotStyle() {
                     const self = this;
                     const style = {};
-                    style.display = 'block';
-                    style.width = '15px';
-                    style.height = '15px';
-                    style.borderRadius = '50%';
                     style.background = self.color;
-                    style.position = 'absolute';
-                    style.top = '-5px';
-                    style.right = '-10px';
-                    style.cursor = 'pointer';
                     return style;
                 }
             },
@@ -131,35 +73,45 @@
                 var self = this;
             },
             methods: {
-                handleProgress(type){
-                    console.log('type')
-                    var self = this;
-                    switch(type){
-                        case 'add':
-                            if(self.percentage + 1 > 100){
-                                break;
-                            } 
-                            self.percentage += 1;
-                            break;
-                        case 'reduce':
-                            if(self.percentage - 1 < 0){
-                                break;
-                            } 
-                            self.percentage -= 1;
-                            break;
-                        default: 
-                            break;
-                    }
-                }
+                
             },
             template: `
-                <div class="wb-progress-bar" :style="barPgStyle" @mousemove="mode === 'enable' ? $emit('handle-move', $event) : ''">
-                    <div class="wb-bar-bg" :style="bgStyle">
+                <div class="wb-progress-bar">
+                    <div class="wb-bar-bg">
                         <div class="wb-bar-progress" :style="barStyle">
-                            <span class="wb-bar-progress-spot" :style="barSpotStyle" @mousedown="mode = 'enable'" @mouseup="mode = 'unable'"></span>
+                            <span class="wb-bar-progress-spot" :style="barSpotStyle"></span>
                         </div>
                     </div>
                 </div>
+            `
+        })
+
+        Vue.component('wb-button', {
+            props: {
+                type: {
+                    type: String,
+                    default: 'default'
+                },
+                round: Boolean,
+                circle: Boolean
+            },
+            created() {
+                const self = this
+            },
+            data() {
+                return {
+                }
+            },
+            methods: {
+                handleClick(evt) {
+                    const self = this
+                    self.$emit('click', evt)
+                }
+            },
+            template: `
+                <button class="wb-button" :class="[{'is-round': round}, {'is-circle': circle}, type ? 'wb-button-' + type : '']" @click="handleClick" >
+                    <span v-if="$slots.default"><slot></slot></span>
+                </button>
             `
         })
 
@@ -185,8 +137,6 @@
             },
             created() {
                 var self = this;
-                self.durationToSeconds = self.getSecondsFromDuration(self.duration);
-                self.barGrowth = self.getMoval(self.durationToSeconds, self.barBgWidth)
                 window.onkeypress = self.onKeyPressHandle;
             },
             mounted() {
@@ -194,49 +144,13 @@
 
             },
             methods:{
-                onHandleMove (val) {
+                clickHandle(type) {
                     var self = this;
-                    console.log(val)
-                },
-                clickHandle() {
-                    var self = this;
-                    self.progressNum += 1;
-                },
-                progressStart(type) {
-                    var self = this;
-                    var i = 0;
-                    if(type !== 'add' || type !== 'reduce'){
-                        return;
-                    }
-                    if(self.dropTimer){
-                        clearTimeout(self.dropTimer);
-                        self.dropTimer = null;
-                    }
-                    if(self.growthTimer){
-                        clearTimeout(self.growthTimer);
-                        self.growthTimer = null;
-                    }
-                    
-                    self.growthTimer = setInterval(() => {
-                       self.handleProgress(type) 
-                       console.log('seconds: ', ++i)
-                    }, 1000);
-                }, 
-                getMoval(seconds, totalLength){
-                    var self = this;
-                    return parseFloat(self.barBgWidth / seconds)
-                },
-                getSecondsFromDuration(duration){
-                    let durationArr = duration.split(':'),
-                        totalSeconds = 0,
-                        minites = 0,
-                        seconds = 0;
-                    if(durationArr.length === 2){
-                        minites = durationArr[0];
-                        seconds = durationArr[1];
-                    }
-                    totalSeconds = parseInt(minites * 60) + parseInt(seconds);
-                    return totalSeconds;
+                    if(type === 'add' && self.progressNum + 1 <= 100){
+                        self.progressNum += 1;
+                    }else if(type === 'reduce' && self.progressNum - 1 >= 0){
+                        self.progressNum -= 1;
+                    }else{}
                 },
                 onKeyPressHandle(e){
                     var self = this;
@@ -252,17 +166,6 @@
                         key: e.key,
                         keyCode: e.keyCode
                     })
-                    
-                    switch(e.keyCode){
-                        case 46:
-                            self.progressStart('add')
-                            break;
-                        case 44:
-                            self.progressStart('reduce')
-                            break;
-                        default:
-                            break;
-                    }
                 },
                 notify(content){
                     let self = this;
@@ -270,53 +173,25 @@
                     self.key = key;
                     self.keyCode = keyCode;
                 },
-                initProgressBar() {
-                    
-                },
-                handleProgress(type){
+                
+                progressStart(type) {
                     var self = this;
-                    switch(type){
-                        case 'add': 
-                            if(self.barWidth < self.barBgWidth && (self.barWidth + self.barGrowth) <= self.barBgWidth){
-                                console.log('===add self.barWidth: ', self.barWidth, ', self.barGrowth: ', self.barGrowth)
-                                self.barWidth = (self.barWidth + self.barGrowth);
-                                console.log('===add self.barWidth', self.barWidth)
-                            }
-                            break;
-                        case 'reduce':
-                            if((self.barWidth - self.barGrowth) >= 0){
-                                console.log('===reduce self.barWidth: ', self.barWidth, ', self.barGrowth: ', self.barGrowth)
-                                self.barWidth = (self.barWidth - self.barGrowth);
-                                console.log('===reduce self.barWidth', self.barWidth)
-                            }
-                            break;
-                        default: 
-                            break;
-                    }
-                    switch(type){
-                        case 'add':
-                            if(self.progressNum + 1 > 100){
-                                break;
-                            } 
-                            self.progressNum += 1;
-                            break;
-                        case 'reduce':
-                            if(self.progressNum - 1 < 0){
-                                break;
-                            } 
-                            self.progressNum -= 1;
-                            break;
-                        default: 
-                            break;
-                    }
                     
-                    if(self.progressNum === 0 || self.progressNum === 100){
-                        clearInterval(self.dropTimer);
-                        clearInterval(self.growthTimer);
-
+                    var i = 0;
+                    if(type !== 'add' && type !== 'reduce'){
+                        return;
+                    }
+                    if(self.dropTimer){
+                        clearTimeout(self.dropTimer);
                         self.dropTimer = null;
+                    }
+                    if(self.growthTimer){
+                        clearTimeout(self.growthTimer);
                         self.growthTimer = null;
                     }
+                    self.growthTimer = setInterval(() => {
+                       self.clickHandle(type)
+                    }, 1000);
                 }
             }
         });
