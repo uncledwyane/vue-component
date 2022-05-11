@@ -1,10 +1,14 @@
 <template>
-  <div id="root"></div>
+  <div id="root">{{ msg }}</div>
 </template>
 
 <script>
 export default {
-
+    data() {
+        return {
+            msg: "Hello, Vue"
+        }
+    }
 }
 </script>
 

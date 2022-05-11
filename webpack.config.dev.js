@@ -1,6 +1,7 @@
 const path = require('path')
 const package = require('./package.json')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
+const VueLoaderPlugin = require('vue-loader/lib/plugin-webpack5')
 
 function resolve (dir) {
     return path.join(__dirname, '..', dir)
@@ -36,9 +37,12 @@ const config = {
             }
         ]
     },
-    plugins: [new HtmlWebpackPlugin({
-        template: path.join(__dirname, './static/index.html')
-    })]
+    plugins: [
+        new HtmlWebpackPlugin({
+            template: path.join(__dirname, './static/index.html')
+        }),
+        new VueLoaderPlugin()
+    ]
 }
 
 
