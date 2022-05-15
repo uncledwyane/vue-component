@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12"></script>
+    <script src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
+    <link rel="stylesheet" href="../styles/wb-button.css">
+</head>
+
+<body>
+    <div id="app">
+        <wb-button type="main">Main</wb-button>
+        <wb-button type="success">Success</wb-button>
+        <wb-button type="warning">Waring</wb-button>
+        <wb-button type="danger" round>Error</wb-button>
+        <wb-button>Default</wb-button>
+        <wb-button type="danger" circle>+</wb-button>
+    </div>
+    <script>
+        Vue.config.devtools = true;
+        
+        Vue.component('wb-button', {
+            props: {
+                type: {
+                    type: String,
+                    default: 'default'
+                },
+                round: Boolean,
+                circle: Boolean
+            },
+            created() {
+                const self = this
+            },
+            data() {
+                return {
+                }
+            },
+            methods: {
+                handleClick(evt) {
+                    const self = this
+                    self.$emit('click', evt)
+                }
+            },
+            template: `
+                <button class="wb-button" :class="[{'is-round': round}, {'is-circle': circle}, type ? 'wb-button-' + type : '']" @click="handleClick" >
+                    <span v-if="$slots.default"><slot></slot></span>
+                </button>
+            `
+        })
+
+        var vm = new Vue({
+           el:'#app',
+           data:{},
+           methods:{}
+        });
+    </script>
+</body>
+
+</html>

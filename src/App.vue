@@ -3,6 +3,7 @@
 </template>
 
 <script>
+import wbButton from './components/wb-button.vue';
 export default {
     data() {
         return {

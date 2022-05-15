@@ -9,10 +9,11 @@ function resolve (dir) {
 
 const config = {
     mode: 'development',
-    entry: './src/index.js',
+    entry: ['babel-polyfill', './src/index.js'],
     devServer: {
         static: path.join(__dirname, './dist'),
-        liveReload: true
+        liveReload: true,
+        open: true
     },
     output: {
         path: path.join(__dirname, 'dist'),
@@ -21,8 +22,9 @@ const config = {
     resolve: {
         alias: {
         'vue$': 'vue/dist/vue.common.js',
-        'src': resolve('src'),
-        'static': resolve('static'),
+        '@': resolve('src'),
+        'components': resolve('src/components'),
+        'static': resolve('static')
         }
     },
     module: {
@@ -34,6 +36,10 @@ const config = {
             {
               test: /\.js$/,
               loader: 'babel-loader'
+            },
+            {
+              test: /\.css$/,
+              use: ['css-loader', 'style-loader']
             }
         ]
     },
