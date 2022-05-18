@@ -1,10 +1,13 @@
 <template>
     <button class="wb-button" :class="[{'is-round': round}, {'is-circle': circle}, type ? 'wb-button-' + type : '']" @click="handleClick" >
-        <span v-if="$slots.default"><slot></slot></span>
+        <span v-if="$slots.default">
+            <slot></slot>
+        </span>
     </button>
 </template>
 
 <script>
+console.log('asdfasdf')
 export default {
     props: {
         type: {
@@ -40,7 +43,7 @@ export default {
     color: #000000;
     border: none;
     box-sizing: border-box;
-    margin: 0 5px;
+    margin: 5px;
 }
 
 .wb-button:active{

@@ -3,6 +3,13 @@ const package = require('./package.json')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const VueLoaderPlugin = require('vue-loader/lib/plugin-webpack5')
 
+if(!process.env.NODE_ENV){
+    process.env.NODE_ENV = 'development'
+}
+
+console.log('port: ', process.env.NODE_ENV)
+
+
 function resolve (dir) {
     return path.join(__dirname, '..', dir)
 }
@@ -11,13 +18,14 @@ const config = {
     mode: 'development',
     entry: ['babel-polyfill', './src/index.js'],
     devServer: {
-        static: path.join(__dirname, './dist'),
+        static: path.join(__dirname, './static'),
         liveReload: true,
-        open: true
+        open: false
     },
     output: {
         path: path.join(__dirname, 'dist'),
-        filename: package.name + '_' + package.version + '.js'
+        filename: package.name + '_' + package.version + '.js',
+        // publicPath: './static'
     },
     resolve: {
         alias: {
@@ -39,7 +47,7 @@ const config = {
             },
             {
               test: /\.css$/,
-              use: ['css-loader', 'style-loader']
+              use: ['style-loader', 'css-loader']
             }
         ]
     },

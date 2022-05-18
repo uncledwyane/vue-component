@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "webpack-dev-server --mode=development --config webpack.config.dev.js",
-    "build": "webpack --mode=production --progress --config webpack.config.js"
+    "build": "webpack --mode=production --progress --stats-error-details --config webpack.config.js "
   },
   "repository": {
     "type": "git",
@@ -25,6 +25,7 @@
     "babel-polyfill": "^6.26.0",
     "css-loader": "^6.7.1",
     "element-ui": "^2.15.8",
+    "file-loader": "^6.2.0",
     "html-webpack-plugin": "^5.5.0",
     "lodash": "^4.17.21",
     "style-loader": "^3.3.1",

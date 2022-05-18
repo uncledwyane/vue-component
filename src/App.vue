@@ -1,14 +1,14 @@
 <template>
-  <div id="root">{{ msg }}</div>
+  <div id="root">
+    <wb-button type="success">测试</wb-button>
+  </div>
 </template>
 
 <script>
 import wbButton from './components/wb-button.vue';
 export default {
-    data() {
-        return {
-            msg: "Hello, Vue"
-        }
+    components: {
+        wbButton
     }
 }
 </script>
