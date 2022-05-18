@@ -9,18 +9,20 @@ if(!process.env.NODE_ENV){
 
 console.log('port: ', process.env.NODE_ENV)
 
-
-function resolve (dir) {
-    return path.join(__dirname, '..', dir)
-}
-
 const config = {
     mode: 'development',
     entry: ['babel-polyfill', './src/index.js'],
     devServer: {
         static: path.join(__dirname, './static'),
         liveReload: true,
-        open: false
+        open: false,
+        client: {
+            progress: true,
+            overlay: {
+                errors: true,
+                warnings: false,
+            }
+        }
     },
     output: {
         path: path.join(__dirname, 'dist'),
@@ -29,10 +31,10 @@ const config = {
     },
     resolve: {
         alias: {
-        'vue$': 'vue/dist/vue.common.js',
-        '@': resolve('src'),
-        'components': resolve('src/components'),
-        'static': resolve('static')
+            '@': path.resolve(__dirname, './src'),
+            'components': path.resolve(__dirname, './src/components'),
+            'static': path.resolve(__dirname, './static'),
+            'styles': path.resolve(__dirname, './static/styles')
         }
     },
     module: {
