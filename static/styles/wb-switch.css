@@ -17,6 +17,7 @@
     box-sizing: border-box;
     padding: 0 3px;
     position: relative;
+    transition: all ease .3s;
 }
 
 .wb-switch-btn-bg-active {
@@ -42,11 +43,14 @@
 }
 
 .wb-switch-btn-active {
-    position: absolute;
-    right: 3px;
+    /* position: absolute;
+    right: 3px; */
+    transform: translateX(31px);
 }
 
 .wb-switch-btn-inactive {
-    position: absolute;
-    left: 3px;
+    /* position: absolute;
+    left: 3px; */
+    transform: translateX(0px);
+
 }

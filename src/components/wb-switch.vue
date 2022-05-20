@@ -19,11 +19,25 @@ export default {
             mode: 'on', // on | off |disabled
         }
     },
+    watch: {
+        enable: function(val, oldVal) {
+            const self = this;
+            self.$emit('change', val)
+        }
+    },
+    mounted() {
+        var self = this;
+        console.log('switch: ', self)
+    },
     methods: {
         handleClick(evt) {
-            const self = this
+            const self = this;
             self.enable = !self.enable;
-            self.$emit('click', evt)
+            self.$emit('click', evt);
+        },
+        handleChange(evt) {
+            const self = this;
+            self.$emit('change', self.enable)
         }
     }
 }

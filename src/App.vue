@@ -13,6 +13,10 @@
 
         <wb-divider></wb-divider>
 
+        <wb-switch @change="handleSwitchChange"></wb-switch>
+        <wb-switch></wb-switch>
+        <wb-switch></wb-switch>
+        <wb-switch></wb-switch>
         <wb-switch></wb-switch>
     </div>
 </template>
@@ -28,6 +32,16 @@ export default {
         wbProgress,
         wbDivider,
         wbSwitch
+    },
+    data () {
+        return {
+            btnEnable: true
+        }
+    },
+    methods: {
+        handleSwitchChange(e) {
+            console.log('change: ', e)
+        }
     }
 }
 </script>
