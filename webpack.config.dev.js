@@ -17,7 +17,7 @@ const config = {
         liveReload: true,
         open: false,
         client: {
-            progress: true,
+            progress: false, // 进度，在浏览器控制台中显示
             overlay: {
                 errors: true,
                 warnings: false,

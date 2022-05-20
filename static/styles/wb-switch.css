@@ -1,0 +1,52 @@
+.wb-switch {
+    width: 55px;
+    height: 25px;
+    /* border: 1px solid #000; */
+    box-sizing: border-box;
+    margin: 5px;
+    display: flex;
+    cursor: pointer;
+}
+
+.wb-switch-btn-bg{
+    width: 100%;
+    height: 100%;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    box-sizing: border-box;
+    padding: 0 3px;
+    position: relative;
+}
+
+.wb-switch-btn-bg-active {
+    background: #215afc;
+}
+
+.wb-switch-btn-bg-inactive {
+    background: #c5cde2;
+}
+
+.wb-switch:hover {
+    cursor: pointer;
+}
+
+
+.wb-switch-btn {
+    width: 18px;
+    height: 19px;
+    display: inline-block;
+    background: #ffffff;
+    border-radius: 3px;
+    transition: all ease .3s;
+}
+
+.wb-switch-btn-active {
+    position: absolute;
+    right: 3px;
+}
+
+.wb-switch-btn-inactive {
+    position: absolute;
+    left: 3px;
+}
