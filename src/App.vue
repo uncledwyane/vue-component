@@ -18,6 +18,8 @@
         <wb-switch></wb-switch>
         <wb-switch></wb-switch>
         <wb-switch></wb-switch>
+
+        <Verify :type="1"></Verify>
     </div>
 </template>
 
@@ -26,12 +28,15 @@ import wbButton from 'components/wb-button.vue';
 import wbProgress from 'components/wb-progress.vue';
 import wbDivider from 'components/wb-divider.vue';
 import wbSwitch from 'components/wb-switch.vue';
+// import Verify from 'vue2-verify';
+
 export default {
     components: {
         wbButton,
         wbProgress,
         wbDivider,
-        wbSwitch
+        wbSwitch,
+        Verify
     },
     data () {
         return {
